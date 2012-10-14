@@ -1,7 +1,7 @@
 // Copyright (c) 2012 Florian H., https://github.com/js-coder https://github.com/js-coder/cookie.js
 
 var store = function (document, undefined) {
-
+	var noop = function(){};
 	var utils = {
 
 		// Is the given value an array? Use ES5 Array.isArray if it's available.
@@ -111,8 +111,8 @@ var store = function (document, undefined) {
 
 	};
 
-	cookie.get = function (keys, fallback) {
-
+	cookie.get = function (keys, fallback, cb) {
+		cb = cb || fallback || noop;
 		fallback = fallback || undefined;
 		var cookies = this.all();
 
@@ -124,15 +124,14 @@ var store = function (document, undefined) {
 				var value = keys[i];
 				result[value] = utils.retrieve(cookies[value], fallback);
 			}
-
-			return result;
-
-		} else return utils.retrieve(cookies[keys], fallback);
-
+		} else {
+			result = utils.retrieve(cookies[keys], fallback);
+		cb(result);
+		return result;
 	};
 
-	cookie.all = function () {
-
+	cookie.all = function (cb) {
+		cb = cb || noop;
 		if (document.cookie === '') return {};
 
 		var cookies = document.cookie.split('; '),
@@ -142,7 +141,7 @@ var store = function (document, undefined) {
 			var item = cookies[i].split('=');
 			result[decodeURIComponent(item[0])] = decodeURIComponent(item[1]);
 		}
-
+		cb(result);
 		return result;
 
 	};
@@ -154,7 +153,6 @@ var store = function (document, undefined) {
 		var ret = cookie.set('_', '_').get('_') === '_';
 		cookie.remove('_');
 		return ret;
-
 	};
 
 	return cookie;
