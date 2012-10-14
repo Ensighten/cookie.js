@@ -22,7 +22,7 @@ var store = function (document, undefined) {
 		// Get the keys of an object. Use ES5 Object.keys if it's available.
 		getKeys: Object.keys || function (obj) {
 			var keys = [],
-				 key = '';
+			key = '';
 			for (key in obj) {
 				if (obj.hasOwnProperty(key)) keys.push(key);
 			}
@@ -59,14 +59,14 @@ var store = function (document, undefined) {
 
 			for (var k in key) { // TODO: `k` really sucks as a variable name, but I didn't come up with a better one yet.
 				if (key.hasOwnProperty(k)) this.set(k, key[k], value);
-			}
+		}
 
-		} else {
+	} else {
 
-			options = utils.isPlainObject(options) ? options : { expires: options };
+		options = utils.isPlainObject(options) ? options : { expires: options };
 
 			var expires = options.expires !== undefined ? options.expires : (this.defaults.expires || ''), // Empty string for session cookies.
-			    expiresType = typeof(expires);
+			expiresType = typeof(expires);
 
 			if (expiresType === 'string' && expires !== '') expires = new Date(expires);
 			else if (expiresType === 'number') expires = new Date(+new Date + 1000 * this.expiresMultiplier * expires); // This is needed because IE does not support the `max-age` cookie attribute.
@@ -126,16 +126,17 @@ var store = function (document, undefined) {
 			}
 		} else {
 			result = utils.retrieve(cookies[keys], fallback);
-		cb(result);
-		return result;
-	};
+			cb(result);
+			return result;
+		}
+	}
 
 	cookie.all = function (cb) {
 		cb = cb || noop;
 		if (document.cookie === '') return {};
 
 		var cookies = document.cookie.split('; '),
-			  result = {};
+		result = {};
 
 		for (var i = 0, l = cookies.length; i < l; i++) {
 			var item = cookies[i].split('=');
