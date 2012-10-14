@@ -1,6 +1,6 @@
 // Copyright (c) 2012 Florian H., https://github.com/js-coder https://github.com/js-coder/cookie.js
 
-!function (document, undefined) {
+var store = function (document, undefined) {
 
 	var utils = {
 
@@ -157,16 +157,6 @@
 
 	};
 
-	// If an AMD loader is present use AMD.
-	// If a CommonJS loader is present use CommonJS.
-	// Otherwise assign the `cookie` object to the global scope.
-
-	if (typeof define === 'function' && define.amd) {
-		define(function () {
-			return cookie;
-		});
-	} else if (typeof exports !== 'undefined') {
-		exports.cookie = cookie;
-	} else window.cookie = cookie;
+	return cookie;
 
 }(document);
